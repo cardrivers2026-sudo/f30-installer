@@ -35,7 +35,21 @@ jobs:
       - name: Create root build.gradle if missing
         run: |
           if [ ! -f build.gradle ]; then
-            echo "plugins { id 'com.android.application' version '8.1.0' apply false }" > build.gradle
+            cat > build.gradle <<EOF
+plugins { id 'com.android.application' version '8.1.0' apply false }
+
+repositories {
+    google()
+    mavenCentral()
+}
+
+subprojects {
+    repositories {
+        google()
+        mavenCentral()
+    }
+}
+EOF
           fi
 
       - name: Build Debug APK
